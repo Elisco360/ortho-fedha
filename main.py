@@ -556,18 +556,18 @@ def markets():
             if checkbox:
                 st.write(df)
 
-            multivariable_expander = st.beta_expander("Multivariable Comparison")
-            year_on_year_expander = st.beta_expander("Single Variable Year-on-Year Comparison")
+            multivariable_expander = st.expander("Multivariable Comparison")
+            year_on_year_expander = st.expander("Single Variable Year-on-Year Comparison")
 
-            multi_variable_comparison = multivariable_expander.beta_container()
-            single_variable_comparison = year_on_year_expander.beta_container()
+            multi_variable_comparison = multivariable_expander.container()
+            single_variable_comparison = year_on_year_expander.container()
 
             with multi_variable_comparison:
                 # Allowing the user to choose variables
                 include = st.multiselect("Variables", tuple(df['Variables'].unique()),
                                          default=list(df['Variables'].unique()))
 
-                ll, lm, m, rm, rr = st.beta_columns(5)
+                ll, lm, m, rm, rr = st.columns(5)
                 list_of_months = list(d_months)
                 start_month = ll.selectbox("Start Month", tuple(list_of_months))
                 list_of_end_months = list_of_months[list_of_months.index(start_month):]
@@ -577,7 +577,7 @@ def markets():
                         "Please ensure that the selected 'End month' does not come before the selected 'Start month'")
                     return 0
 
-                data = self.get_monthly_data(df=df,
+                data = get_monthly_data(df=df,
                                              start_month=start_month,
                                              end_month=end_month,
                                              variables=variables,
@@ -585,12 +585,12 @@ def markets():
                                              months=months)
 
                 # self.plot_monthly_barchart(result=data,variables=variables,include=include)
-                self.plot_monthly_linechart(result=data, variables=variables, include=include)
-                pie_chart = st.beta_container()
+                plot_monthly_linechart(result=data, variables=variables, include=include)
+                pie_chart = st.container()
                 with pie_chart:
-                    pll, plm, pm, prm, prr = st.beta_columns(5)
+                    pll, plm, pm, prm, prr = st.columns(5)
                     pie_chart_month = pll.selectbox('Pie Chart Month', list_of_months)
-                    pie_data = self.get_monthly_data(df=df,
+                    pie_data = get_monthly_data(df=df,
                                                      start_month=pie_chart_month,
                                                      end_month=pie_chart_month,
                                                      variables=variables,
@@ -627,12 +627,12 @@ def markets():
                                                       list(df["Year"])[0]))
 
                 # Filtering the data by year
-                mll, mrr = st.beta_columns(2)
-                year_comparison_data = self.get_year_data(df=df, years=yearly_comparison_values)
+                mll, mrr = st.columns(2)
+                year_comparison_data = get_year_data(df=df, years=yearly_comparison_values)
                 variable_to_plot = mll.selectbox("Select a variable", tuple(df['Variables'].unique()))
 
                 # Plotting the actual graph
-                result = self.yearly_comparison(year_comparison_data, variable_to_plot=variable_to_plot)
+                result = yearly_comparison(year_comparison_data, variable_to_plot=variable_to_plot)
                 self.plot_linechart(result=result)
 
         if markers == "Real Sector Indicator":
