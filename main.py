@@ -528,13 +528,120 @@ def markets():
                 result = yearly_comparison(year_comparison_data, variable_to_plot=variable_to_plot)
                 plot_linechart(result=result)
 
+        def merchandise_trade_flows(self):
+            # Reading data from the csv file
+            st.header('Merchandise Trade Flows')
+            file = "Data/Economics/mfs.csv"
+            df = pd.read_csv(file,
+                             header=None,
+                             skiprows=1,
+                             names=['Year', 'Variables', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+                                    'Sep', 'Oct', 'Nov', 'Dec'])
+            df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+
+            # Getting the years, variables and the months present
+            years = df['Year'].unique()
+            months = list(df.columns[2:])
+            variables = df['Variables'].unique()
+
+            reversed_months = months
+            reversed_months.reverse()
+
+            # Getting months for specific years
+            d_months = []
+            for year in years:
+                d_months += [month + ' ' + str(year) for month in reversed_months]
+
+            checkbox = st.sidebar.checkbox("Show data")
+            if checkbox:
+                st.write(df)
+
+            multivariable_expander = st.beta_expander("Multivariable Comparison")
+            year_on_year_expander = st.beta_expander("Single Variable Year-on-Year Comparison")
+
+            multi_variable_comparison = multivariable_expander.beta_container()
+            single_variable_comparison = year_on_year_expander.beta_container()
+
+            with multi_variable_comparison:
+                # Allowing the user to choose variables
+                include = st.multiselect("Variables", tuple(df['Variables'].unique()),
+                                         default=list(df['Variables'].unique()))
+
+                ll, lm, m, rm, rr = st.beta_columns(5)
+                list_of_months = list(d_months)
+                start_month = ll.selectbox("Start Month", tuple(list_of_months))
+                list_of_end_months = list_of_months[list_of_months.index(start_month):]
+                end_month = lm.selectbox("End Month", tuple(list_of_months))
+                if list_of_months.index(end_month) > list_of_months.index(start_month):
+                    st.error(
+                        "Please ensure that the selected 'End month' does not come before the selected 'Start month'")
+                    return 0
+
+                data = self.get_monthly_data(df=df,
+                                             start_month=start_month,
+                                             end_month=end_month,
+                                             variables=variables,
+                                             include=include,
+                                             months=months)
+
+                # self.plot_monthly_barchart(result=data,variables=variables,include=include)
+                self.plot_monthly_linechart(result=data, variables=variables, include=include)
+                pie_chart = st.beta_container()
+                with pie_chart:
+                    pll, plm, pm, prm, prr = st.beta_columns(5)
+                    pie_chart_month = pll.selectbox('Pie Chart Month', list_of_months)
+                    pie_data = self.get_monthly_data(df=df,
+                                                     start_month=pie_chart_month,
+                                                     end_month=pie_chart_month,
+                                                     variables=variables,
+                                                     include=include,
+                                                     months=months)
+                    names = []
+                    Months = []
+                    Values = []
+                    for item in pie_data:
+                        names.append(item)
+                        Months.append(pie_data[item]['x'][0])
+                        Values.append(pie_data[item]['y'][0])
+                    result = {'Names': names, 'Months': Months, 'Values': Values}
+                    result = pd.DataFrame(result)
+
+                    total_values = []
+                    for value in Values:
+                        if value != None: total_values.append(value)
+                    if sum(total_values) == 0:
+                        st.success('No data available')
+                    else:
+                        fig = px.pie(result, values="Values", names='Names')
+                        fig.update_traces(textposition='inside', textinfo='percent+label')
+
+                        fig.update_layout(title={'text': str(pie_chart_month) + ' Merchandise Trade Flows', 'x': 0.28})
+                        st.plotly_chart(fig, use_container_width=True)
+
+            with single_variable_comparison:
+                # GRAPH TO COMPARE SINGLE VARIABLE AGAINST ITSELF ACROSS THE YEARS
+                yearly_comparison_values = st.slider('Select a year range',
+                                                     list(df["Year"])[-1],
+                                                     list(df["Year"])[0],
+                                                     (list(df["Year"])[-1],
+                                                      list(df["Year"])[0]))
+
+                # Filtering the data by year
+                mll, mrr = st.beta_columns(2)
+                year_comparison_data = self.get_year_data(df=df, years=yearly_comparison_values)
+                variable_to_plot = mll.selectbox("Select a variable", tuple(df['Variables'].unique()))
+
+                # Plotting the actual graph
+                result = self.yearly_comparison(year_comparison_data, variable_to_plot=variable_to_plot)
+                self.plot_linechart(result=result)
+
         if markers == "Real Sector Indicator":
             real_sector_indicators()
         elif markers == "Government Fiscal Operations":
             government_fiscal_operations()
         elif markers == "Merchandise Trade Flows (USD 'M)":
             st.title("Merchandise Trade Flows")
-            st.info("Under Development")
+            merchandise_trade_flows()
         elif markers == "Balance of Payments":
             st.title("Balance of Payments")
             st.info("Under Development")
