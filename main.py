@@ -37,7 +37,7 @@ def home():
                     """)
 
         a, b, c, d = st.columns(4)
-        join = d.button("Become a contributor")
+        join = d.button("Become a contributor - Join our community")
         if join:
             webbrowser.open('https://ortho.jetbrains.space/')
 
