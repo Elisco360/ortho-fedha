@@ -1,22 +1,153 @@
 import pandas as pd
 import streamlit as st
-import datetime as dt
-import webbrowser
-from streamlit_option_menu import option_menu
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
 
 
 class Economics:
+    def __init__(self):
+        pass
 
-    def economics_section(self):
+    @staticmethod
+    def economics_section():
         with st.sidebar:
             st.title("Economic Markers")
             markers = st.selectbox("Select a marker", ["Real Sector Indicator", "Government Fiscal Operations",
                                                        "Interest Rates", "Merchandise Trade Flows (USD 'M)",
                                                        "Gross domestic Products", "Balance of Payments",
                                                        "Commodities"])
+
+        def get_monthly_data(df, start_month, end_month, variables, include, months):
+            # Getting specific data based on user input
+            start_year = int(start_month.split(' ')[-1])
+            end_year = int(end_month.split(' ')[-1])
+            year_data = df[(df['Year'] >= start_year) & (df['Year'] <= end_year)]
+
+            # Getting the values to plot based on user input
+            result = {}
+            reversed_months = months
+            reversed_months.reverse()
+            for item in variables:
+                if item not in include: continue
+                x_values = []
+                y_values = []
+                i = start_year
+                while i <= end_year:
+                    full_set_x = [month + ' ' + str(i) for month in reversed_months]
+                    try:
+                        full_set_y = list(
+                            year_data[(year_data['Year'] == i) & (year_data['Variables'] == item)][months].values[0])
+                    except:
+                        full_set_y = [None for number in full_set_x]
+
+                    if i == start_year:
+                        start_index = full_set_x.index(start_month)
+                        full_set_x = full_set_x[start_index:]
+                        full_set_y = full_set_y[start_index:]
+
+                    if i == end_year:
+                        end_index = full_set_x.index(end_month)
+                        full_set_x = full_set_x[:end_index + 1]
+                        full_set_y = full_set_y[:end_index + 1]
+
+                    x_values += full_set_x
+                    y_values += full_set_y
+                    i += 1
+
+                if len(y_values) > 0: result[item] = {'x': x_values, 'y': y_values}
+
+            return result
+
+        def get_year_data(df, years):
+            data = df[
+                (df["Year"] >= years[0]) & (
+                            df['Year'] <= years[-1])]  # Filters the data for rows from the year provided
+            return data
+
+        def yearly_comparison(df, variable_to_plot):
+            result = {}
+            year = list(df['Year'])[0]
+            variables = list(df["Year"].unique())  # Getting a list of all the available variables
+            result['variables'] = variables  # Assigning that list to a key in a dictionary
+            result['monthly data'] = []  # Initializing a list to store the monthly data for each variable
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            for variable in result['variables']:
+                monthly_amount = []  # Empty array to store the amount for January to December
+                sliced = df.loc[(df['Variables'] == variable_to_plot) & (
+                        df['Year'] == variable)]  # Isolate the data for a specific variable
+                monthly_data = sliced[months]  # Isolate the monthly data for a specific variable
+                for month in months:
+                    try:
+                        monthly_amount.append(float(monthly_data[month]))  # Getting the amount for each month
+                    except:
+                        monthly_amount.append(None)
+                result['monthly data'].append(monthly_amount)  # Adding the list of months to main dictionary
+
+            return result
+
+        def plot_monthly_linechart(result, variables, include, y_label_text=None, x_label_text=None):
+            # Plotting the values
+            fig = make_subplots(specs=[[{"secondary_y": True}]])
+            for item in variables:
+                if item not in include: continue
+                trace = go.Scatter(x=result[item]['x'], y=result[item]['y'], name=str(item))
+                if item == 'CIEA(Index)':
+                    fig.add_trace(trace, secondary_y=True)
+                else:
+                    fig.add_trace(trace, secondary_y=False)
+
+            fig.update_xaxes(title_text="Month")
+
+            fig.update_yaxes(title_text="Amount", secondary_y=False)
+            fig.update_yaxes(title_text="Amount - (Index)", secondary_y=True)
+
+            if x_label_text is not None: fig.update_xaxes(title_text=x_label_text)
+            if y_label_text is not None: fig.update_xaxes(title_text=y_label_text)
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        def plot_linechart(result, include=None, legend=True):
+            traces = []
+            names = list(result["variables"])  # Getting a list of variable names for the legend
+            if include == None: include = names
+            monthly_data = result['monthly data']  # Getting the amounts from Jan to Dec for each variable
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
+                      'Dec']  # Months for the x axis
+
+            for i in range(len(names)):
+                if names[i] not in include: continue
+                traces.append(go.Scatter(x=months, y=monthly_data[i],
+                                         name=str(names[i])))  # Getting the individual bars for each variable
+            fig = make_subplots()
+            for trace in traces:
+                fig.add_trace(trace)
+
+            fig.update_xaxes(title_text="Month")
+            fig.update_yaxes(title_text="Amount")
+            if legend == False: fig.update_layout(showlegend=False)
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        def plot_monthly_barchart(result, variables, include, y_label_text=None, x_label_text=None):
+            # Plotting the values
+            fig = make_subplots()
+            for item in variables:
+                if item not in include: continue
+                trace = go.Bar(x=result[item]['x'], y=result[item]['y'], name=str(item))
+                if item != 'CIEA(Index)': fig.add_trace(trace)
+
+            fig.update_xaxes(title_text="Month")
+            fig.update_yaxes(title_text="Amount")
+            if x_label_text != None: fig.update_xaxes(title_text=x_label_text)
+            if y_label_text != None: fig.update_xaxes(title_text=y_label_text)
+
+            st.plotly_chart(fig, use_container_width=True)
+
+        def list_vals_to_string(information):
+            for i in range(len(information)):
+                information[i] = str(information[i])
+            return information
 
         def real_sector_indicators():
             st.header("Real Sector Indicator")
@@ -595,133 +726,3 @@ class Economics:
         elif markers == "Commodities":
             commodities()
 
-        def get_monthly_data(df, start_month, end_month, variables, include, months):
-            # Getting specific data based on user input
-            start_year = int(start_month.split(' ')[-1])
-            end_year = int(end_month.split(' ')[-1])
-            year_data = df[(df['Year'] >= start_year) & (df['Year'] <= end_year)]
-
-            # Getting the values to plot based on user input
-            result = {}
-            reversed_months = months
-            reversed_months.reverse()
-            for item in variables:
-                if item not in include: continue
-                x_values = []
-                y_values = []
-                i = start_year
-                while i <= end_year:
-                    full_set_x = [month + ' ' + str(i) for month in reversed_months]
-                    try:
-                        full_set_y = list(
-                            year_data[(year_data['Year'] == i) & (year_data['Variables'] == item)][months].values[0])
-                    except:
-                        full_set_y = [None for number in full_set_x]
-
-                    if i == start_year:
-                        start_index = full_set_x.index(start_month)
-                        full_set_x = full_set_x[start_index:]
-                        full_set_y = full_set_y[start_index:]
-
-                    if i == end_year:
-                        end_index = full_set_x.index(end_month)
-                        full_set_x = full_set_x[:end_index + 1]
-                        full_set_y = full_set_y[:end_index + 1]
-
-                    x_values += full_set_x
-                    y_values += full_set_y
-                    i += 1
-
-                if len(y_values) > 0: result[item] = {'x': x_values, 'y': y_values}
-
-            return result
-
-        def get_year_data(df, years):
-            data = df[
-                (df["Year"] >= years[0]) & (
-                            df['Year'] <= years[-1])]  # Filters the data for rows from the year provided
-            return data
-
-        def yearly_comparison(df, variable_to_plot):
-            result = {}
-            year = list(df['Year'])[0]
-            variables = list(df["Year"].unique())  # Getting a list of all the available variables
-            result['variables'] = variables  # Assigning that list to a key in a dictionary
-            result['monthly data'] = []  # Initializing a list to store the monthly data for each variable
-            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            for variable in result['variables']:
-                monthly_amount = []  # Empty array to store the amount for January to December
-                sliced = df.loc[(df['Variables'] == variable_to_plot) & (
-                        df['Year'] == variable)]  # Isolate the data for a specific variable
-                monthly_data = sliced[months]  # Isolate the monthly data for a specific variable
-                for month in months:
-                    try:
-                        monthly_amount.append(float(monthly_data[month]))  # Getting the amount for each month
-                    except:
-                        monthly_amount.append(None)
-                result['monthly data'].append(monthly_amount)  # Adding the list of months to main dictionary
-
-            return result
-
-        def plot_monthly_linechart(result, variables, include, y_label_text=None, x_label_text=None):
-            # Plotting the values
-            fig = make_subplots(specs=[[{"secondary_y": True}]])
-            for item in variables:
-                if item not in include: continue
-                trace = go.Scatter(x=result[item]['x'], y=result[item]['y'], name=str(item))
-                if item == 'CIEA(Index)':
-                    fig.add_trace(trace, secondary_y=True)
-                else:
-                    fig.add_trace(trace, secondary_y=False)
-
-            fig.update_xaxes(title_text="Month")
-
-            fig.update_yaxes(title_text="Amount", secondary_y=False)
-            fig.update_yaxes(title_text="Amount - (Index)", secondary_y=True)
-
-            if x_label_text is not None: fig.update_xaxes(title_text=x_label_text)
-            if y_label_text is not None: fig.update_xaxes(title_text=y_label_text)
-
-            st.plotly_chart(fig, use_container_width=True)
-
-        def plot_linechart(result, include=None, legend=True):
-            traces = []
-            names = list(result["variables"])  # Getting a list of variable names for the legend
-            if include == None: include = names
-            monthly_data = result['monthly data']  # Getting the amounts from Jan to Dec for each variable
-            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
-                      'Dec']  # Months for the x axis
-
-            for i in range(len(names)):
-                if names[i] not in include: continue
-                traces.append(go.Scatter(x=months, y=monthly_data[i],
-                                         name=str(names[i])))  # Getting the individual bars for each variable
-            fig = make_subplots()
-            for trace in traces:
-                fig.add_trace(trace)
-
-            fig.update_xaxes(title_text="Month")
-            fig.update_yaxes(title_text="Amount")
-            if legend == False: fig.update_layout(showlegend=False)
-
-            st.plotly_chart(fig, use_container_width=True)
-
-        def plot_monthly_barchart(result, variables, include, y_label_text=None, x_label_text=None):
-            # Plotting the values
-            fig = make_subplots()
-            for item in variables:
-                if item not in include: continue
-                trace = go.Bar(x=result[item]['x'], y=result[item]['y'], name=str(item))
-                if item != 'CIEA(Index)': fig.add_trace(trace)
-
-            fig.update_xaxes(title_text="Month")
-            fig.update_yaxes(title_text="Amount")
-            if x_label_text != None: fig.update_xaxes(title_text=x_label_text)
-            if y_label_text != None: fig.update_xaxes(title_text=y_label_text)
-
-            st.plotly_chart(fig, use_container_width=True)
-
-        def list_vals_to_string(information):
-            for i in range(len(information)):
-                information[i] = str(information[i])
-            return information
