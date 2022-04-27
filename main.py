@@ -528,7 +528,7 @@ def markets():
                 result = yearly_comparison(year_comparison_data, variable_to_plot=variable_to_plot)
                 plot_linechart(result=result)
 
-        def merchandise_trade_flows(self):
+        def merchandise_trade_flows():
             # Reading data from the csv file
             st.header('Merchandise Trade Flows')
             file = "Data/Economics/mfs.csv"
