@@ -530,8 +530,8 @@ def markets():
 
         def merchandise_trade_flows():
             # Reading data from the csv file
-            st.header('Merchandise Trade Flows')
-            file = "Data/Economics/mfs.csv"
+            st.title('Merchandise Trade Flows')
+            file = "Dataset/Economics/mtf.csv"
             df = pd.read_csv(file,
                              header=None,
                              skiprows=1,
@@ -633,14 +633,13 @@ def markets():
 
                 # Plotting the actual graph
                 result = yearly_comparison(year_comparison_data, variable_to_plot=variable_to_plot)
-                self.plot_linechart(result=result)
+                plot_linechart(result=result)
 
         if markers == "Real Sector Indicator":
             real_sector_indicators()
         elif markers == "Government Fiscal Operations":
             government_fiscal_operations()
         elif markers == "Merchandise Trade Flows (USD 'M)":
-            st.title("Merchandise Trade Flows")
             merchandise_trade_flows()
         elif markers == "Balance of Payments":
             st.title("Balance of Payments")
