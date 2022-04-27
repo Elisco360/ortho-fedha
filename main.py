@@ -10,8 +10,8 @@ import plotly.express as px
 st.set_page_config(page_icon='assets/icon.png', page_title='Ortho Fedha', layout='wide')
 
 with st.sidebar:
-    options = option_menu('Menu', ['Home', 'Markets', 'News'],
-                          icons=['house', 'boxes', 'card-heading'],
+    options = option_menu('Menu', ['Home', 'Markets', 'Real-Time Trends'],
+                          icons=['house', 'boxes', 'activity'],
                           menu_icon='dot')
 
 
