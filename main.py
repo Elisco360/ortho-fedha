@@ -59,6 +59,8 @@ def home():
 
 
 def markets():
+    ll, lb, bb = st.columns(3)
+    lb.image("assets/logo.png")
     market_options = option_menu('Markets', ['Economics', 'Forex', 'Bonds', 'Equity'],
                                  icons=['basket', 'currency-exchange', 'list-nested', 'grid'],
                                  menu_icon='boxes',
