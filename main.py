@@ -5,6 +5,7 @@ from streamlit_option_menu import option_menu
 from economics import Economics as ec
 from forex import Forex as fx
 from bonds import Bonds as bnds
+from equity import Equity as qt
 
 st.set_page_config(page_icon='assets/icon.png', page_title='Ortho Fedha', layout='wide')
 
@@ -75,11 +76,13 @@ def markets():
         bnds.bonds_section()
 
     if market_options == "Equity":
-        st.title("Equity")
-        st.warning("Currently Under Development")
+        qt.equities()
 
 
 if options == "Home":
     home()
 elif options == "Markets":
     markets()
+elif options == "Real-Time Trends":
+    st.title("Trends")
+    st.warning("Under Development")
