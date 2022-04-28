@@ -1,8 +1,7 @@
-import api.api
 import streamlit as st
 import webbrowser
 import requests
-import pycountry
+from annotated_text import annotated_text
 from streamlit_option_menu import option_menu
 
 from economics import Economics as ec
@@ -88,27 +87,32 @@ if options == "Home":
 elif options == "Markets":
     markets()
 elif options == "News":
-    st.title("News")
-    ll, rr = st.columns([3, 1])
-    country = ll.selectbox("Select a country", ["Ghana 🇬🇭", "Nigeria 🇳🇬", "Egypt 🇪🇬", "South Africa 🇿🇦", "Algeria 🇩🇿", "Morocco 🇲🇦",
-                                                "Kenya 🇰🇪", "Ethiopia 🇪🇹", "Ivory Coast 🇨🇮", "Angola 🇦🇴", "China 🇨🇳", "United States 🇺🇸 ",
-                                                "Russia 🇷🇺"])
-    rr.multiselect("Select a news category", ["Business", "Technology", "Politics"])
+    st.title("News Feed")
+    #country = ll.selectbox("Select a country", ["Ghana 🇬🇭", "Nigeria 🇳🇬", "Egypt 🇪🇬", "South Africa 🇿🇦", "Algeria 🇩🇿", "Morocco 🇲🇦",
+    #                                            "Kenya 🇰🇪", "Ethiopia 🇪🇹", "Ivory Coast 🇨🇮", "Angola 🇦🇴", "China 🇨🇳", "United States 🇺🇸 ",
+    #                                            "Russia 🇷🇺"])
+    category = st.selectbox("Select a news category", ["Business", "Technology"])
     query = True
 
     if query:
-        country = pycountry.countries.get(name=country).alpha_2
-        url = f"https://newsapi.org/v2/top-headlines?country={country}&category=business&apiKey={apiKEY}"
+        #country = pycountry.countries.get(name=country).alpha_2
+        url = f"https://newsapi.org/v2/top-headlines?country=us&category={category}&apiKey={apiKEY}"
 
         r = requests.get(url)
         r = r.json()
         articles = r['articles']
 
         for each_article in articles:
+            st.markdown('<hr>', unsafe_allow_html=True)
             st.header(each_article['title'])
+
             if each_article['author']:
-                st.write(each_article['author'])
-            st.write(each_article['source']['name'])
+                annotated_text((each_article['author'], "AUTHOR", "#BAFFA8"))
+            st.markdown("\n")
+            annotated_text((each_article['source']['name'], "SOURCE", "#FFEEB3"))
+            st.markdown("\n")
+            try:
+                st.image(each_article['urlToImage'])
+            except:
+                st.image("assets/news.png")
             st.write(each_article['description'])
-            st.image(each_article['urlToImage'])
-            st.write(each_article['content'])
