@@ -72,7 +72,6 @@ def markets():
         fx.foreign_exchange()
 
     if market_options == "Bonds":
-        st.title("Bonds")
         bnds.bonds_section()
 
     if market_options == "Equity":

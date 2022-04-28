@@ -12,10 +12,10 @@ class Bonds:
 
     @staticmethod
     def bonds_section():
-        st.title("Bonds Sections")
-
-        sections = st.selectbox("Select a section", ["Fixed Income"])
-
+        st.header("Bonds")
+        with st.sidebar:
+            st.title("Bonds Sections")
+            sections = st.selectbox("Select a section", ["Fixed Income"])
 
         def sortBonds(bonds):
             lookup = {}
@@ -47,7 +47,7 @@ class Bonds:
             st.header('Fixed Income')
 
             # File path filepath
-            file = "Data/Bond/BBNs.csv"
+            file = "Dataset/Bonds/bbns.csv"
 
             df = pd.read_csv(file)
             df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
@@ -90,12 +90,12 @@ class Bonds:
                 if month_value not in month_choices:
                     month_choices.append(month_value)
 
-            line_chart = st.beta_container()
-            pie_chart = st.beta_container()
+            line_chart = st.container()
+            pie_chart = st.container()
 
             with line_chart:
                 # Allowing the user to select a month range
-                ll, lm, m, rm, rr = st.beta_columns(5)
+                ll, lm, m, rm, rr = st.columns(5)
                 list_of_start_months = [] + month_choices
                 list_of_start_months.reverse()
 
@@ -135,7 +135,7 @@ class Bonds:
 
             with pie_chart:
                 # PLOTTING A PIE CHART
-                pll, plm, pm, prm, prr = st.beta_columns(5)
+                pll, plm, pm, prm, prr = st.columns(5)
 
                 # Allowing the user to select a month range
                 list_of_start_months = [] + month_choices
