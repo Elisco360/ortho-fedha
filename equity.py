@@ -21,17 +21,68 @@ class Equity:
             date = '-'.join(date)
             return date
 
-        def stringToDate(mydate):
-            mydate = mydate.split('-')
-            mydate = datetime.date(int(mydate[2]), int(mydate[1]), int(mydate[0]))
+        def stringToDate(date):
+            date = date.split('-')
+            date = datetime.date(int(date[2]), int(date[1]), int(date[0]))
 
-            return mydate
+            return date
+
+        def monthsFromInception(prices, dates):
+            months = []
+            for date in dates:
+                if date[3:] not in months:
+                    months.append(date[3:])
+            return months
+
+        def VAMI(prices, dates):
+            returns = monthlyReturnsFromInception(prices, dates)
+            values = []
+            for value in returns:
+                vami = (1 + (value / 100)) * 1000
+                values.append(vami)
+
+            return values
+
+        def change(startPrice, currentPrice):
+            currentPrice = float(currentPrice)
+            startPrice = float(startPrice)
+            return (((currentPrice) - startPrice) / startPrice) * 100
+
+        def monthlyReturnsFromInception(prices, dates):
+            # print(f"prices:{prices}\ndates:{dates}")
+            index_value = 0
+            startPrice = prices[index_value]
+            days = []
+            returns = []
+            currentMonth = dates[0][3:5]
+            for date in dates:
+                if date[3:5] == currentMonth:
+                    days.append(prices[dates.index(date)])
+                else:
+                    try:
+                        returns.append(change(startPrice=startPrice, currentPrice=days[-1]))
+                    except:
+                        returns.append(None)
+                    days = []
+                    currentMonth = date[3:5]
+                    days.append(prices[dates.index(date)])
+
+            returns.append(change(startPrice=startPrice, currentPrice=days[-1]))
+            return returns
+
+        def vami(specific_dates, share_prices):
+            prices = share_prices
+            dates = [dateToString(date) for date in specific_dates]
+            dates = dates[:len(prices)]
+            months = monthsFromInception(prices=prices, dates=dates)
+            vami_vals = VAMI(dates=dates, prices=prices)
+            return (months, vami_vals)
 
         # Reading data from the csv file
         st.header('Equity')
-        filechoice = "Dataset/Equity/eqty.csv"
+        file = "Dataset/Equity/eqty.csv"
         # list_of_files = os.listdir('Data/Equity/')
-        df = pd.read_csv(filechoice)
+        df = pd.read_csv(file)
         df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
 
         # Getting a list of variables from the csv file
@@ -46,17 +97,11 @@ class Equity:
             all_dates[i] = '-'.join(split_date)
 
         # Getting the first and last dates of the data in the list
-        try:
-            start_date = stringToDate(all_dates[0])
-            end_date = stringToDate(all_dates[-1])
-        except:
-            st.error(
-                f"Ensure that '{filechoice}' is a csv file and has at least 2 columns. The first column should contain dates and the second should contain prices.")
-            st.error(f"Also ensure that all dates are in the format 'dd-mm-yyyy' for '{filechoice}'")
-            return 0
+        start_date = stringToDate(all_dates[0])
+        end_date = stringToDate(all_dates[-1])
 
-        # Selecting a date range of data to consider
-        # date_range = st.slider("Select a date range for file 1: "+str(filechoice),start_date,end_date,(start_date,end_date))
+        # Selecting a date range of data to consider date_range = st.slider("Select a date range for file 1: "+str(
+        # file),start_date,end_date,(start_date,end_date))
         try:
             try:
                 df['Trade Date'] = pd.to_datetime(df['Trade Date'], format='%d-%m-%Y').dt.date
@@ -79,7 +124,6 @@ class Equity:
 
             # Extracting all the share codes available in the data
             all_share_codes = list(df['Share code'].unique())
-
 
             # Removing TOTAL because it is not a share
             try:

@@ -1,5 +1,7 @@
 import streamlit as st
 import webbrowser
+import requests
+import pycountry
 from streamlit_option_menu import option_menu
 
 from economics import Economics as ec
@@ -10,7 +12,7 @@ from equity import Equity as qt
 st.set_page_config(page_icon='assets/icon.png', page_title='Ortho Fedha', layout='wide')
 
 with st.sidebar:
-    options = option_menu('Menu', ['Home', 'Markets', 'Real-Time Trends'],
+    options = option_menu('Menu', ['Home', 'Markets', 'News'],
                           icons=['house', 'boxes', 'activity'],
                           menu_icon='dot')
 
@@ -83,6 +85,11 @@ if options == "Home":
     home()
 elif options == "Markets":
     markets()
-elif options == "Real-Time Trends":
-    st.title("Trends")
-    st.warning("Under Development")
+elif options == "News":
+    st.title("News")
+    ll, rr = st.columns([3, 1])
+    ll.multiselect("Select a country", ["Ghana 🇬🇭", "Nigeria 🇳🇬", "Egypt 🇪🇬", "South Africa 🇿🇦", "Algeria 🇩🇿", "Morocco 🇲🇦",
+                                        "Kenya 🇰🇪", "Ethiopia 🇪🇹", "Ivory Coast 🇨🇮", "Angola 🇦🇴", "China 🇨🇳", "United States 🇺🇸 ",
+                                        "Russia 🇷🇺"])
+    rr.selectbox("Select a news category", ["Business", "Technology", "Politics"])
+    query = rr.button("Search")
