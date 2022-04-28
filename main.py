@@ -74,7 +74,7 @@ def markets():
     if market_options == "Bonds":
         st.title("Bonds")
         bnds.bonds_section()
-        
+
     if market_options == "Equity":
         st.title("Equity")
         st.warning("Currently Under Development")
