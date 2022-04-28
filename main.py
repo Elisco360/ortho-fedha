@@ -115,4 +115,5 @@ elif options == "News":
                 st.image(each_article['urlToImage'])
             except:
                 st.image("assets/news.png")
+            st.markdown(" ")
             st.write(each_article['description'])
