@@ -2,7 +2,7 @@ import streamlit as st
 import webbrowser
 import requests
 import pycountry
-
+from api import apiKEY
 from streamlit_option_menu import option_menu
 
 from economics import Economics as ec
