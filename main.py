@@ -108,3 +108,7 @@ elif options == "News":
             st.header(each_article['title'])
             if each_article['author']:
                 st.write(each_article['author'])
+            st.write(each_article['source']['name'])
+            st.write(each_article['description'])
+            st.image(each_article['urlToImage'])
+            st.write(each_article['content'])
