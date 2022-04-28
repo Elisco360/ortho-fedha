@@ -2,6 +2,7 @@ import streamlit as st
 import webbrowser
 import requests
 import pycountry
+
 from streamlit_option_menu import option_menu
 
 from economics import Economics as ec
@@ -92,4 +93,8 @@ elif options == "News":
                                         "Kenya 🇰🇪", "Ethiopia 🇪🇹", "Ivory Coast 🇨🇮", "Angola 🇦🇴", "China 🇨🇳", "United States 🇺🇸 ",
                                         "Russia 🇷🇺"])
     rr.selectbox("Select a news category", ["Business", "Technology", "Politics"])
-    query = rr.button("Search")
+    query = True
+
+    if query:
+        url = f"https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey={apiKEY}"
+
