@@ -3,7 +3,6 @@ import streamlit as st
 import webbrowser
 import requests
 import pycountry
-from api import apiKEY
 from streamlit_option_menu import option_menu
 
 from economics import Economics as ec
@@ -11,6 +10,7 @@ from forex import Forex as fx
 from bonds import Bonds as bnds
 from equity import Equity as qt
 
+apiKEY = "ca5ccfad28074a4f92436e2e56afad2c"
 st.set_page_config(page_icon='assets/icon.png', page_title='Ortho Fedha', layout='wide')
 
 with st.sidebar:
@@ -90,12 +90,21 @@ elif options == "Markets":
 elif options == "News":
     st.title("News")
     ll, rr = st.columns([3, 1])
-    ll.multiselect("Select a country", ["Ghana 🇬🇭", "Nigeria 🇳🇬", "Egypt 🇪🇬", "South Africa 🇿🇦", "Algeria 🇩🇿", "Morocco 🇲🇦",
-                                        "Kenya 🇰🇪", "Ethiopia 🇪🇹", "Ivory Coast 🇨🇮", "Angola 🇦🇴", "China 🇨🇳", "United States 🇺🇸 ",
-                                        "Russia 🇷🇺"])
-    rr.selectbox("Select a news category", ["Business", "Technology", "Politics"])
+    country = ll.selectbox("Select a country", ["Ghana 🇬🇭", "Nigeria 🇳🇬", "Egypt 🇪🇬", "South Africa 🇿🇦", "Algeria 🇩🇿", "Morocco 🇲🇦",
+                                                "Kenya 🇰🇪", "Ethiopia 🇪🇹", "Ivory Coast 🇨🇮", "Angola 🇦🇴", "China 🇨🇳", "United States 🇺🇸 ",
+                                                "Russia 🇷🇺"])
+    rr.multiselect("Select a news category", ["Business", "Technology", "Politics"])
     query = True
 
     if query:
-        url = f"https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey={apiKEY}"
+        country = pycountry.countries.get(name=country).alpha_2
+        url = f"https://newsapi.org/v2/top-headlines?country={country}&category=business&apiKey={apiKEY}"
 
+        r = requests.get(url)
+        r = r.json()
+        articles = r['articles']
+
+        for each_article in articles:
+            st.header(each_article['title'])
+            if each_article['author']:
+                st.write(each_article['author'])
