@@ -3,7 +3,8 @@ import webbrowser
 from streamlit_option_menu import option_menu
 
 from economics import Economics as ec
-from forex import  Forex as fx
+from forex import Forex as fx
+from bonds import Bonds as bnds
 
 st.set_page_config(page_icon='assets/icon.png', page_title='Ortho Fedha', layout='wide')
 
@@ -72,8 +73,8 @@ def markets():
 
     if market_options == "Bonds":
         st.title("Bonds")
-        st.warning("Currently Under Development")
-
+        bnds.bonds_section()
+        
     if market_options == "Equity":
         st.title("Equity")
         st.warning("Currently Under Development")
