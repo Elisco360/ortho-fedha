@@ -190,7 +190,7 @@ def analytics():
     with st.expander("Performance Analytics"):
 
         # Extracting the dates and price data for the selected range
-        dates = all_dates_1[start_index:end_index+1]
+        dates = all_dates[start_index:end_index+1]
         prices = all_prices[start_index:end_index+1]
 
         # Using the end date of the selected range to calculate the returns
@@ -212,7 +212,7 @@ def analytics():
         vami = pf.VAMI(prices, dates)
         months = pf.monthsFromInception(prices, dates)
 
-        if one_month_return_1 != None: left.metric("1 month return",str(round(one_month_return,3))+"%")
+        if one_month_return != None: left.metric("1 month return",str(round(one_month_return,3))+"%")
         
     
 if options == "Home":
