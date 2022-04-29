@@ -69,7 +69,7 @@ def home():
 
 def markets():
     ll, lb, bb = st.columns(3)
-    lb.image("assets/logo.png")
+    lb.image("assets/ortho_markets.png")
     market_options = option_menu('Markets', ['Economics', 'Forex', 'Bonds', 'Equity'],
                                  icons=['basket', 'currency-exchange', 'list-nested', 'grid'],
                                  menu_icon='boxes',
@@ -88,6 +88,8 @@ def markets():
         qt.equities()
 
 def news():
+    ll, lb, bb = st.columns(3)
+    lb.image("assets/news.png")
     st.title("News Feed")
     ll, rr = st.columns([0.3, 0.7])
     #countries = {'Argentina 🇦🇷': 'AR', 'Austria 🇦🇹': 'AT', 'Australia 🇦🇺': 'AU', 'Belgium 🇧🇪': 'BE', 'Bulgaria 🇧🇬': 'BG', 
@@ -121,12 +123,14 @@ def news():
             try:
                 st.image(each_article['urlToImage'])
             except:
-                st.image("assets/news.png")
+                st.image("assets/news_img.png")
             st.markdown(" ")
             st.write(each_article['description'])
             
             
 def analytics():
+    ll, lb, bb = st.columns(3)
+    lb.image("assets/analytics.png")
     st.title("Analytics")
     
     st.info("Please make sure your file is in **CSV** format and has at least 2 columns.The first column should contain dates and the second should contain prices.")
