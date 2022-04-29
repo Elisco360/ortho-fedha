@@ -124,7 +124,7 @@ def news():
             
 def analytics():
     st.title("Analytics")
-	ll,rr = st.columns(2)
+    ll, rr = st.columns(2)
 
     file = st.file_uploader("Choose your CSV file", accept_multiple_files=False, help="Please make sure your file is in csv format.")
    
