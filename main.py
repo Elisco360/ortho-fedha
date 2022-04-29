@@ -126,15 +126,91 @@ def news():
 def analytics():
     st.title("Analytics")
     
-    st.info("Please make sure your file is in CSV format and has at least 2 columns.The first column should contain dates and the second should contain prices.")
+    st.info("Please make sure your file is in **CSV** format and has at least 2 columns.The first column should contain dates and the second should contain prices.")
     file = st.file_uploader("Choose your CSV file", accept_multiple_files=False, help="Please make sure your file is in csv format.")
     
     try:
         dataframe = pd.read_csv(file)
-        st.table(dataframe)
+        dataframe = dataframe.loc[:, ~dataframe.columns.str.contains('^Unnamed')]
     except:
         pass
+    
+    columns = list(dataframe.columns)
 
+    all_prices = list(dataframe[columns[1]])
+	all_dates = list(dataframe[columns[0]])
+
+        # Getting the first and last dates of the data in the list
+        try: start_date = pf.stringToDate(all_dates[0])
+        except:
+            st.error(f"Ensure that '{file}' is a csv file and has at least 2 columns. The first column should contain dates and the second should contain prices.")
+            return 0
+
+        end_date = pf.stringToDate(all_dates[-1])
+
+        # Selecting the range of dates to consider
+        date_range = st.slider("Select a date range for file 1: "+str(file),start_date,end_date,(start_date,end_date))
+
+        # Conveting the selected start and end to strings and getting their indexes
+        start_date_string = pf.dateToString(date_range[0])
+        end_date_string = pf.dateToString(date_range[-1])
+
+
+        # Checking if data exists for the selected dates
+        try: start_index = all_dates.index(start_date_string)
+        except:
+            st.error(f"Data for '{start_date_string}' is not present in '{file}'. Ensure that dates are in the format 'dd-mm-yyyy'")
+            return 0
+
+        end_index = all_dates.index(end_date_string)
+
+        monthly_returns_chart = st.expander(f"Monthly Returns Chart")
+        with monthly_returns_chart:
+            specific_returns = pf.monthlyReturnsFromInception(prices=all_prices, dates=all_dates)          
+            specific_months = pf.monthsFromInception(prices=all_prices ,dates=all_dates)
+            
+            file_info = {'Returns':specific_returns, 'Months':specific_months}
+            new_df = pd.DataFrame(file_info)
+
+            trace = go.Scatter(x=new_df['Months'], y=new_df['Returns'], name=file)
+            
+            fig = make_subplots()
+			fig.add_trace(trace)
+
+            fig.update_xaxes(title_text="Date")
+            fig.update_yaxes(title_text="Return from Inception - (%)")
+            fig.update_layout(width=1300, height=500)
+            fig.update_layout(title={'text':f"Monthly Returns from Inception", 'x':0.5})
+            st.plotly_chart(fig, use_container_width=True)
+            
+    with st.expander("Performance Analytics"):
+
+        # Extracting the dates and price data for the selected range
+        dates = all_dates_1[start_index:end_index+1]
+        prices = all_prices[start_index:end_index+1]
+
+        # Using the end date of the selected range to calculate the returns
+        myDay = date_range[-1].day
+        myMonth = date_range[-1].month
+        myYear = date_range[-1].year
+
+        year_to_date = pf.YearToDate(prices,dates,myYear)[-1]
+        one_month_return = pf.oneMonthReturn(prices, dates, myDay,myMonth,myYear)
+        two_month_return = pf.twoMonthReturn(prices, dates, myDay,myMonth,myYear)
+        three_month_return = pf.threeMonthReturn(prices, dates, myDay,myMonth,myYear)
+        six_month_return = pf.sixMonthReturn(prices,dates,myDay,myMonth,myYear)
+        one_year_return = pf.oneYearReturn(prices,dates,myDay,myMonth,myYear)
+        monthly_returns = pf.monthlyReturns(prices,dates)
+        average_return = pf.averageReturn(prices,dates)
+        average_gain = pf.averageGain(prices,dates)
+        average_loss = pf.averageLoss(prices,dates)
+        compound_average_return = pf.compoundAverageReturn(prices,dates)
+        vami = pf.VAMI(prices, dates)
+        months = pf.monthsFromInception(prices, dates)
+        
+        if one_month_return_1 != None: left.metric("1 month return",round(one_month_return,3),"%")
+        
+        
     
 if options == "Home":
     home()
