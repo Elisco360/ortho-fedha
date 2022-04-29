@@ -211,8 +211,11 @@ def analytics():
         compound_average_return = pf.compoundAverageReturn(prices,dates)
         vami = pf.VAMI(prices, dates)
         months = pf.monthsFromInception(prices, dates)
-
+		
+        st.markdown("<hr>",allow_unsafe_html=True)
         if one_month_return != None: st.metric("1 month return", str(round(one_month_return,3))+"%", "7%")
+        if two_month_return != None: st.metric("2 month return", str(round(two_month_return,3))+"%", "-2%")
+        if three_month_return != None: st.metric("3 month return", str(round(three_month_return,3))+"%", "-5%")
         
     
 if options == "Home":
