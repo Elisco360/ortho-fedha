@@ -1,6 +1,7 @@
 import streamlit as st
 import webbrowser
 import requests
+import plotly.graph_objects as go
 from annotated_text import annotated_text
 from streamlit_option_menu import option_menu
 import pandas as pd
@@ -149,7 +150,7 @@ def analytics():
     end_date = pf.stringToDate(all_dates[-1])
 
     # Selecting the range of dates to consider
-    date_range = st.slider("Select a date range for file 1: "+str(file),start_date,end_date,(start_date,end_date))
+    date_range = st.slider("Select a date range",start_date,end_date,(start_date,end_date))
 
     # Conveting the selected start and end to strings and getting their indexes
     start_date_string = pf.dateToString(date_range[0])
