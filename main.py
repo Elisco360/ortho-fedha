@@ -88,21 +88,21 @@ elif options == "Markets":
     markets()
 elif options == "News":
     st.title("News Feed")
-    ll, rr = st.columns([0.8, 0.2])
-    countries = {'Argentina 🇦🇷': 'AR', 'Austria 🇦🇹': 'AT', 'Australia 🇦🇺': 'AU', 'Belgium 🇧🇪': 'BE', 'Bulgaria 🇧🇬': 'BG', 
-                 'Brazil 🇧🇷': 'BR', 'Canada 🇨🇦': 'CA', 'China 🇨🇳': 'CN', 'Colombia 🇨🇴': 'CO', 'Cuba 🇨🇺': 'CU', 'Czech Republic 🇨🇿': 'CZ', 
-                 'Germany 🇩🇪': 'DE', 'Egypt 🇪🇬': 'EG', 'France 🇫🇷': 'FR', 'United Kingdom 🇬🇧': 'GB', 'Greece 🇬🇷': 'GR', 'Israel 🇮🇱': 'IL', 
-                 'India 🇮🇳': 'IN', 'Italy 🇮🇹': 'IT', 'Japan 🇯🇵': 'JP', 'Mexico 🇲🇽': 'MX', 'Malaysia 🇲🇾': 'MY', 'Nigeria 🇳🇬': 'NG', 
-                 'Philippines 🇵🇭': 'PH', 'Poland 🇵🇱': 'PL', 'Portugal 🇵🇹': 'PT', 'Romania 🇷🇴': 'RO', 'Russia 🇷🇺': 'RU', 
-                 'Saudi Arabia 🇸🇦': 'SA', 'Singapore 🇸🇬': 'SG', 'Sweden 🇸🇪': 'SE', 'Thailand 🇹🇭': 'TH', 'Turkey 🇹🇷': 'TR', 'UAE 🇦🇪': 'AE', 
-                 'United States of America 🇺🇸': 'US', 'South Africa 🇿🇦': 'ZA'}
-    country = ll.selectbox("Select a country", countries.keys())
+    ll, rr = st.columns([0.3, 0.7])
+    #countries = {'Argentina 🇦🇷': 'AR', 'Austria 🇦🇹': 'AT', 'Australia 🇦🇺': 'AU', 'Belgium 🇧🇪': 'BE', 'Bulgaria 🇧🇬': 'BG', 
+    #             'Brazil 🇧🇷': 'BR', 'Canada 🇨🇦': 'CA', 'China 🇨🇳': 'CN', 'Colombia 🇨🇴': 'CO', 'Cuba 🇨🇺': 'CU', 'Czech Republic 🇨🇿': 'CZ', 
+    #             'Germany 🇩🇪': 'DE', 'Egypt 🇪🇬': 'EG', 'France 🇫🇷': 'FR', 'United Kingdom 🇬🇧': 'GB', 'Greece 🇬🇷': 'GR', 'Israel 🇮🇱': 'IL', 
+    #             'India 🇮🇳': 'IN', 'Italy 🇮🇹': 'IT', 'Japan 🇯🇵': 'JP', 'Mexico 🇲🇽': 'MX', 'Malaysia 🇲🇾': 'MY', 'Nigeria 🇳🇬': 'NG', 
+    #             'Philippines 🇵🇭': 'PH', 'Poland 🇵🇱': 'PL', 'Portugal 🇵🇹': 'PT', 'Romania 🇷🇴': 'RO', 'Russia 🇷🇺': 'RU', 
+    #             'Saudi Arabia 🇸🇦': 'SA', 'Singapore 🇸🇬': 'SG', 'Sweden 🇸🇪': 'SE', 'Thailand 🇹🇭': 'TH', 'Turkey 🇹🇷': 'TR', 'UAE 🇦🇪': 'AE', 
+    #             'United States of America 🇺🇸': 'US', 'South Africa 🇿🇦': 'ZA'}
+    #country = ll.selectbox("Select a country", countries.keys())
     category = rr.selectbox("Select a news category", ["Business", "Technology", "Science", "Health"])
     query = True
 
     if query:
-        country = countries[country]
-        url = f"https://newsapi.org/v2/top-headlines?country={country}&category={category}&apiKey={apiKEY}"
+        #country = countries[country]
+        url = f"https://newsapi.org/v2/top-headlines?country=gh&category={category}&apiKey={apiKEY}"
 
         r = requests.get(url)
         r = r.json()
