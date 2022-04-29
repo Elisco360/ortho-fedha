@@ -8,13 +8,16 @@ from economics import Economics as ec
 from forex import Forex as fx
 from bonds import Bonds as bnds
 from equity import Equity as qt
+import performance as pf
+import risk as rs
 
 apiKEY = "ca5ccfad28074a4f92436e2e56afad2c"
 st.set_page_config(page_icon='assets/icon.png', page_title='Ortho Fedha', layout='wide')
 
 with st.sidebar:
+    st.title("Menu")
     options = option_menu('',['Home', 'Markets', 'News', 'Analytics'],
-                          icons=['house', 'boxes', 'activity', 'graph-arrow-up'])
+                          icons=['house', 'boxes', 'activity', 'bar-chart'])
 
 
 def home():
@@ -80,12 +83,7 @@ def markets():
     if market_options == "Equity":
         qt.equities()
 
-
-if options == "Home":
-    home()
-elif options == "Markets":
-    markets()
-elif options == "News":
+def news():
     st.title("News Feed")
     ll, rr = st.columns([0.3, 0.7])
     #countries = {'Argentina 🇦🇷': 'AR', 'Austria 🇦🇹': 'AT', 'Australia 🇦🇺': 'AU', 'Belgium 🇧🇪': 'BE', 'Bulgaria 🇧🇬': 'BG', 
@@ -122,3 +120,21 @@ elif options == "News":
                 st.image("assets/news.png")
             st.markdown(" ")
             st.write(each_article['description'])
+            
+            
+def analytics():
+    st.title("Analytics")
+	ll,rr = st.columns(2)
+
+    file = st.file_uploader("Choose your CSV file", accept_multiple_files=False, help="Please make sure your file is in csv format.")
+   
+    self.decimal_places = 3
+    
+if options == "Home":
+    home()
+elif options == "Markets":
+    markets()
+elif options == "News":
+    news()
+elif options == "Analytics":
+    analytics()
