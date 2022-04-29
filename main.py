@@ -131,7 +131,7 @@ def analytics():
     
     try:
         dataframe = pd.read_csv(file)
-    	st.table(dataframe)
+        st.table(dataframe)
     except:
         pass
 
