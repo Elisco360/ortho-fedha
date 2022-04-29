@@ -176,6 +176,7 @@ class Economics:
                 st.write(dataframe)
 
             multivariate_expander = st.expander("Multivariate Comparison")
+            st.success('Multivariate Comparison is used the compare two dependent variables  ')
             year_on_year_expander = st.expander("Univariate Comparison")
 
             multi_variate_comparison = multivariate_expander.container()
