@@ -56,6 +56,8 @@ class Bonds:
 
         def fixed_income():
             st.header('Fixed Income')
+            st.success ('A bond is a fixed-income instrument that represents a loan made by an investor to a borrower (typically corporate or governmental).\
+                Reference: https://www.investopedia.com/terms/b/bond.asp')
 
             # File path filepath
             file = "Dataset/Bonds/bbns.csv"

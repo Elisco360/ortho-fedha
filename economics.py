@@ -151,7 +151,7 @@ class Economics:
 
         def real_sector_indicators():
             st.header("Real Sector Indicator")
-            st.info(" An economic indicator is a piece of economic data, usually of macroeconomic scale, that is used by analysts to interpret current or future investment possibilities.\
+            st.success(" An economic indicator is a piece of economic data, usually of macroeconomic scale, that is used by analysts to interpret current or future investment possibilities.\
                     These indicators also help to judge the overall health of an economy.\
                         Reference: https://www.investopedia.com/terms/e/economic_indicator.asp")
             file = "Dataset/Economics/rsi.csv"
