@@ -218,7 +218,7 @@ def analytics():
             if two_month_return != None: st.metric("2 month return", str(round(two_month_return,3))+"%", "-2%")
             if three_month_return != None: st.metric("3 month return", str(round(three_month_return,3))+"%", "-5%")
     except:
-        st.error("Kindly upload a csv file")
+        st.success("Kindly upload a csv file")
         
     
 if options == "Home":
