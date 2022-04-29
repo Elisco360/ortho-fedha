@@ -186,33 +186,33 @@ def analytics():
         fig.update_layout(title={'text':f"Monthly Returns from Inception", 'x':0.5})
         st.plotly_chart(fig, use_container_width=True)
 
-        with st.expander("Performance Analytics"):
+        
+    with st.expander("Performance Analytics"):
 
-            # Extracting the dates and price data for the selected range
-            dates = all_dates_1[start_index:end_index+1]
-            prices = all_prices[start_index:end_index+1]
+        # Extracting the dates and price data for the selected range
+        dates = all_dates_1[start_index:end_index+1]
+        prices = all_prices[start_index:end_index+1]
 
-            # Using the end date of the selected range to calculate the returns
-            myDay = date_range[-1].day
-            myMonth = date_range[-1].month
-            myYear = date_range[-1].year
+        # Using the end date of the selected range to calculate the returns
+        myDay = date_range[-1].day
+        myMonth = date_range[-1].month
+        myYear = date_range[-1].year
 
-            year_to_date = pf.YearToDate(prices,dates,myYear)[-1]
-            one_month_return = pf.oneMonthReturn(prices, dates, myDay,myMonth,myYear)
-            two_month_return = pf.twoMonthReturn(prices, dates, myDay,myMonth,myYear)
-            three_month_return = pf.threeMonthReturn(prices, dates, myDay,myMonth,myYear)
-            six_month_return = pf.sixMonthReturn(prices,dates,myDay,myMonth,myYear)
-            one_year_return = pf.oneYearReturn(prices,dates,myDay,myMonth,myYear)
-            monthly_returns = pf.monthlyReturns(prices,dates)
-            average_return = pf.averageReturn(prices,dates)
-            average_gain = pf.averageGain(prices,dates)
-            average_loss = pf.averageLoss(prices,dates)
-            compound_average_return = pf.compoundAverageReturn(prices,dates)
-            vami = pf.VAMI(prices, dates)
-            months = pf.monthsFromInception(prices, dates)
+        year_to_date = pf.YearToDate(prices,dates,myYear)[-1]
+        one_month_return = pf.oneMonthReturn(prices, dates, myDay,myMonth,myYear)
+        two_month_return = pf.twoMonthReturn(prices, dates, myDay,myMonth,myYear)
+        three_month_return = pf.threeMonthReturn(prices, dates, myDay,myMonth,myYear)
+        six_month_return = pf.sixMonthReturn(prices,dates,myDay,myMonth,myYear)
+        one_year_return = pf.oneYearReturn(prices,dates,myDay,myMonth,myYear)
+        monthly_returns = pf.monthlyReturns(prices,dates)
+        average_return = pf.averageReturn(prices,dates)
+        average_gain = pf.averageGain(prices,dates)
+        average_loss = pf.averageLoss(prices,dates)
+        compound_average_return = pf.compoundAverageReturn(prices,dates)
+        vami = pf.VAMI(prices, dates)
+        months = pf.monthsFromInception(prices, dates)
 
-            if one_month_return_1 != None: left.metric("1 month return",str(round(one_month_return,3))+"%")
-
+        if one_month_return_1 != None: left.metric("1 month return",str(round(one_month_return,3))+"%")
         
     
 if options == "Home":
