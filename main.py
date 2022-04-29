@@ -129,8 +129,11 @@ def analytics():
     st.info("Please make sure your file is in CSV format and has at least 2 columns.The first column should contain dates and the second should contain prices.")
     file = st.file_uploader("Choose your CSV file", accept_multiple_files=False, help="Please make sure your file is in csv format.")
     
-    dataframe = pd.read_csv(file)
-    st.table(dataframe)
+    try:
+        dataframe = pd.read_csv(file)
+    	st.table(dataframe)
+    except:
+        pass
 
     
 if options == "Home":
