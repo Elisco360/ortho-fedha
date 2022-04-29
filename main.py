@@ -156,22 +156,6 @@ def analytics():
 
         end_date = pf.stringToDate(all_dates[-1])
 
-        # Selecting the range of dates to consider
-        date_range = st.slider("Select a date range",start_date,end_date,(start_date,end_date))
-
-        # Conveting the selected start and end to strings and getting their indexes
-        start_date_string = pf.dateToString(date_range[0])
-        end_date_string = pf.dateToString(date_range[-1])
-
-
-        # Checking if data exists for the selected dates
-        try: start_index = all_dates.index(start_date_string)
-        except:
-            st.error(f"Data for '{start_date_string}' is not present in '{file}'. Ensure that dates are in the format 'dd-mm-yyyy'")
-            return 0
-
-        end_index = all_dates.index(end_date_string)
-
         monthly_returns_chart = st.expander(f"Monthly Returns Chart")
         with monthly_returns_chart:
             specific_returns = pf.monthlyReturnsFromInception(prices=all_prices, dates=all_dates)          
