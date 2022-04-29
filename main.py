@@ -189,7 +189,7 @@ def analytics():
 
 
         with st.expander("Performance Analytics"):
-
+			st.header("Performance Indexes")
             # Extracting the dates and price data for the selected range
             dates = all_dates[start_index:end_index+1]
             prices = all_prices[start_index:end_index+1]
