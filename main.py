@@ -173,7 +173,7 @@ def analytics():
         file_info = {'Returns':specific_returns, 'Months':specific_months}
         new_df = pd.DataFrame(file_info)
 
-        trace = go.Scatter(x=new_df['Months'], y=new_df['Returns'], name=file)
+        trace = go.Scatter(x=new_df['Months'], y=new_df['Returns'])
 
         fig = make_subplots()
         fig.add_trace(trace)
@@ -209,7 +209,7 @@ def analytics():
             vami = pf.VAMI(prices, dates)
             months = pf.monthsFromInception(prices, dates)
 
-            if one_month_return_1 != None: left.metric("1 month return",round(one_month_return,3),"%")
+            if one_month_return_1 != None: left.metric("1 month return",str(round(one_month_return,3))+"%")
 
         
     
