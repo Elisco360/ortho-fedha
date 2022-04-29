@@ -3,6 +3,7 @@ import webbrowser
 import requests
 from annotated_text import annotated_text
 from streamlit_option_menu import option_menu
+import pandas as pd
 
 from economics import Economics as ec
 from forex import Forex as fx
