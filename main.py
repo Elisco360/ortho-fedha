@@ -128,11 +128,13 @@ def analytics():
 
     file = st.file_uploader("Choose your CSV file", accept_multiple_files=False, help="Please make sure your file is in csv format.")
     
+    st.info("Please make sure your file is in CSV format and has at least 2 columns.The first column should contain dates and the second should contain prices.")
     try:
-        pd.dataframe = pd.read_csv(uploaded_file)
+        dataframe = pd.read_csv(file)
+        ll.success("File uploaded successfully")
         st.write(dataframe)
     except:
-        st.error("Please make sure your file is in CSV format and has at least 2 columns.\nThe first column should contain dates and the second should contain prices.")
+       	ll.error("File upload failed")
 
     
 if options == "Home":
