@@ -1,3 +1,4 @@
+from git import Reference
 import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
@@ -13,6 +14,8 @@ class Forex:
     @staticmethod
     def foreign_exchange():
         st.header("Foreign Exchange")
+        st.info("Foreign Exchange (forex or FX) is the trading of one currency for another.\
+                Reference: https://www.investopedia.com/terms/f/foreign-exchange.asp ")
         # Reading the file
         filename = "Dataset/Fx/fx.csv"
         df = pd.read_csv(filename)
