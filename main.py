@@ -212,7 +212,7 @@ def analytics():
         vami = pf.VAMI(prices, dates)
         months = pf.monthsFromInception(prices, dates)
 
-        if one_month_return != None: st.metric("1 month return",str(round(one_month_return,3))+"%")
+        if one_month_return != None: st.metric("1 month return", str(round(one_month_return,3))+"%", "7%")
         
     
 if options == "Home":
