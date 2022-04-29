@@ -132,8 +132,7 @@ def analytics():
         pd.dataframe = pd.read_csv(uploaded_file)
         st.write(dataframe)
     except:
-        st.error("Please make sure your file is in CSV format and has at least 2 columns.\n 
-                 "The first column should contain dates and the second should contain prices.")
+        st.error("Please make sure your file is in CSV format and has at least 2 columns.\nThe first column should contain dates and the second should contain prices.")
 
     
 if options == "Home":
