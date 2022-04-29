@@ -124,17 +124,12 @@ def news():
             
 def analytics():
     st.title("Analytics")
-    ll, rr = st.columns(2)
-
-    file = st.file_uploader("Choose your CSV file", accept_multiple_files=False, help="Please make sure your file is in csv format.")
     
     st.info("Please make sure your file is in CSV format and has at least 2 columns.The first column should contain dates and the second should contain prices.")
-    try:
-        dataframe = pd.read_csv(file)
-        ll.success("File uploaded successfully")
-        st.write(dataframe)
-    except:
-       	ll.error("File upload failed")
+    file = st.file_uploader("Choose your CSV file", accept_multiple_files=False, help="Please make sure your file is in csv format.")
+    
+    dataframe = pd.read_csv(file)
+    st.table(dataframe)
 
     
 if options == "Home":
