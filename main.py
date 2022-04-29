@@ -138,7 +138,11 @@ def analytics():
     except:
         pass
     
-    columns = list(dataframe.columns)
+    try:
+        columns = list(dataframe.columns)
+    except:
+        st.error("Kindly upload a csv file")
+
     
     all_prices = list(dataframe[columns[1]])
     all_dates = list(dataframe[columns[0]])
