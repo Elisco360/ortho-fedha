@@ -13,9 +13,8 @@ apiKEY = "ca5ccfad28074a4f92436e2e56afad2c"
 st.set_page_config(page_icon='assets/icon.png', page_title='Ortho Fedha', layout='wide')
 
 with st.sidebar:
-    options = option_menu('Menu', ['Home', 'Markets', 'News'],
-                          icons=['house', 'boxes', 'activity'],
-                          menu_icon='dot')
+    options = option_menu('',['Home', 'Markets', 'News', 'Analytics'],
+                          icons=['house', 'boxes', 'activity', 'graph-arrow-up'])
 
 
 def home():
