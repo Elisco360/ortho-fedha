@@ -102,7 +102,7 @@ elif options == "News":
 
     if query:
         #country = countries[country]
-        url = f"https://newsapi.org/v2/top-headlines?country=ng&category={category}&apiKey={apiKEY}"
+        url = f"https://newsapi.org/v2/top-headlines?country=us&category={category}&apiKey={apiKEY}"
 
         r = requests.get(url)
         r = r.json()
