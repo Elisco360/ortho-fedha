@@ -2,6 +2,8 @@ import streamlit as st
 import webbrowser
 import requests
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import plotly.express as px
 from annotated_text import annotated_text
 from streamlit_option_menu import option_menu
 import pandas as pd
