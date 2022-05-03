@@ -14,7 +14,7 @@ class Forex:
     @staticmethod
     def foreign_exchange():
         st.header("Foreign Exchange")
-        st.success("Foreign Exchange (forex or FX) is the trading of one currency for another.\
+        st.info("Foreign Exchange (forex or FX) is the trading of one currency for another.\
                 Reference: https://www.investopedia.com/terms/f/foreign-exchange.asp ")
         # Reading the file
         filename = "Dataset/Fx/fx.csv"
