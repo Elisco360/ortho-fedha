@@ -200,7 +200,7 @@ def analytics():
         months_1 = pf.monthsFromInception(prices_1, dates_1)
 
         left,mid,right = st.columns(3)
-        price_avg = sum(all_prices_1)/len(all_prices_1)
+        
         left.markdown("\n\n")
         if one_month_return_1 != None: left.metric("1 month return", str(round(one_month_return_1,3))+"%",round(one_month_return_1/100, 3))
         if two_month_return_1 != None: left.metric("2 month return", str(round(two_month_return_1,3))+"%",round(two_month_return_1/100, 3))
