@@ -281,7 +281,7 @@ def analytics():
         if skewness_1 != None: right_risk.metric("Skewness", str(round(skewness_1,3)),round(skewness_1,3))
         if kurtosis_1 != None: right_risk.metric("Kurtosis", str(round(kurtosis_1,3)),round(kurtosis_1,3))
         if profit_to_loss_ratio_1 != None: right_risk.metric("Profit to loss Ratio", str(round(profit_to_loss_ratio_1,3)))
-        if max_drawdown_1 != None: right_risk.metric("Maximum Drawdown", str(round(max_drawdown_1,3)), round(max_drawdown_1,3)
+        if max_drawdown_1 != None: right_risk.metric("Maximum Drawdown", str(round(max_drawdown_1,3)), round(max_drawdown_1,3))
     
 if options == "Home":
     home()
