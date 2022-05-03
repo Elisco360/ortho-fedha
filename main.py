@@ -217,7 +217,7 @@ def analytics():
         vami_1 = pf.VAMI(prices_1, dates_1)
         months_1 = pf.monthsFromInception(prices_1, dates_1)
 
-        left,mid,right = columns(3)
+        left,mid,right = st.columns(3)
         price_avg = sum(all_prices_1)/len(all_prices_1)
         left.markdown("\n\n")
         if one_month_return_1 != None: left.metric("1 month return",round(one_month_return_1,self.decimal_places)+"%", pf.change(one_month_return_1, price_avg))
