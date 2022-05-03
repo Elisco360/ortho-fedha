@@ -175,11 +175,11 @@ def analytics():
     
     end_index_1 = all_dates_1.index(end_date_string_1)
 
-    monthly_returns_chart = st.beta_expander(f"Monthly Returns Chart")
+    monthly_returns_chart = st.expander(f"Monthly Returns Chart")
     with monthly_returns_chart:
 
-        specific_returns_1 = pf.monthlyReturnsFromInception(prices = equalized_prices_1, dates=equalized_dates_1)
-        specific_months_1 = pf.monthsFromInception(prices=equalized_prices_1 ,dates=equalized_dates_1)
+        specific_returns_1 = pf.monthlyReturnsFromInception(prices = all_prices_1, dates=all_dates_1)
+        specific_months_1 = pf.monthsFromInception(prices=all_prices_1 ,dates=all_dates_1)
         
         file_info_1 = {'Returns':specific_returns_1, 'Months':specific_months_1}
         new_df_1 = pd.DataFrame(file_info_1)
