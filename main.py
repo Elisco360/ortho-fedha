@@ -268,7 +268,7 @@ def analytics():
         if gain_standard_deviation_1 != None: left_risk.metric("Gain Standard Deviation", str(round(gain_standard_deviation_1,3)), round(gain_standard_deviation_1,3))
         if loss_standard_deviation_1 != None: left_risk.metric("Loss Standard Deviation", str(round(loss_standard_deviation_1,3)), -round(loss_standard_deviation_1,3))
         if downside_deviation_1 != None: left_risk.metric("Downside Deviation", str(round(downside_deviation_1,3)))
-        if semi_deviation_1 != None: left_risk.metric("Semi Deviation", str(round(semi_deviatoin_1,3)))
+        if semi_deviation_1 != None: left_risk.metric("Semi Deviation", str(round(semi_deviation_1,3)))
         
         mid_risk.markdown("\n\n")
         if sharpe_ratio_1 != None: mid_risk.metric("Sharpe Ratio", str(round(sharpe_ratio_1,3)))
