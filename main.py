@@ -159,8 +159,6 @@ def analytics():
         return 0
 
     end_date_1 = pf.stringToDate(all_dates_1[-1])
-    end_date_2 = pf.stringToDate(all_dates_2[-1])
-    end_date_3 = pf.stringToDate(all_dates_3[-1])
 
     # Selecting the range of dates to consider
     date_range_1 = st.slider("Select a date range for file: ",start_date_1,end_date_1,(start_date_1,end_date_1))
