@@ -194,6 +194,7 @@ def analytics():
 	
     with st.expander(f"Fund Performance"):
         st.header("Performance Indexes")
+        st.markdown("<hr>")
         dates_1 = all_dates_1[start_index_1:end_index_1+1]
         prices_1 = all_prices_1[start_index_1:end_index_1+1]
 
@@ -202,7 +203,6 @@ def analytics():
         myMonth_1 = date_range_1[-1].month
         myYear_1 = date_range_1[-1].year
 
-        # FILE_1 = Performance analytics
         year_to_date_1 = pf.YearToDate(prices_1,dates_1,myYear_1)[-1]
         one_month_return_1 = pf.oneMonthReturn(prices_1, dates_1, myDay_1,myMonth_1,myYear_1)
         two_month_return_1 = pf.twoMonthReturn(prices_1, dates_1, myDay_1,myMonth_1,myYear_1)
@@ -221,15 +221,15 @@ def analytics():
         price_avg = sum(all_prices_1)/len(all_prices_1)
         left.markdown("\n\n")
         if one_month_return_1 != None: left.metric("1 month return", str(round(one_month_return_1,3))+"%",round(one_month_return_1/100, 3))
-        #if two_month_return_1 != None: left.metric("2 month return: **{round(two_month_return_1,self.decimal_places)} %")
-        #if three_month_return_1 != None: left.metric(f"** 3 month return: **{round(three_month_return_1,self.decimal_places)} %")
-        #if six_month_return_1 != None: left.metric(f"** 6 month return: **{round(six_month_return_1,self.decimal_places)} %")
-        #if one_year_return_1 != None: mid.metric(f"** 1 year return: **{round(one_year_return_1,self.decimal_places)} %")
-        #if compound_average_return_1 != None: mid.metric(f"** Compound average return: **{round(compound_average_return_1,self.decimal_places)} %")
-        #if year_to_date_1 != None: mid.metric(f"** Year to date: **{round(year_to_date_1,self.decimal_places)} %")
-        #if average_return_1 != None: right.metric(f"** Average return: **{round(average_return_1,self.decimal_places)} %")
-        #if average_gain_1 != None: right.metric(f"** Average gain: **{round(average_gain_1,self.decimal_places)} %")
-        #if average_loss_1 != None: right.metric(f"** Average loss: **{round(average_loss_1,self.decimal_places)} %")
+        if two_month_return_1 != None: left.metric("2 month return", str(round(two_month_return_1,3))+"%",round(two_month_return_1/100, 3))
+		if three_month_return_1 != None: left.metric("3 month return", str(round(three_month_return_1,3))+"%",round(three_month_return_1/100, 3))
+        if six_month_return_1 != None: left.metric("6 month return", str(round(six_month_return_1,3))+"%",round(six_month_return_1/100, 3))
+        if one_year_return_1 != None: mid.metric("One year return", str(round(one_year_return_1,3))+"%",round(one_year_return_1/100, 3))
+        if compound_average_return_1 != None: mid.metric("Compound average return", str(round(compound_average_return_1,3))+"%",round(compound_average_return_1/100, 3))
+        if year_to_date_1 != None: mid.metric("Year to date", str(round(year_to_date_1,3))+"%",round(year_to_date_1/100, 3))
+        if average_return_1 != None: right.metric("Average return", str(round(average_return_1,3))+"%",round(average_return_1/100, 3))
+        if average_gain_1 != None: right.metric("Average gain", str(round(average_gain_1,3))+"%",round(average_gain_1/100, 3))
+        if average_loss_1 != None: right.metric("Average loss", str(round(average_loss_1,3))+"%",round(average_loss_1/100, 3))
 
         p_trace_1 = go.Scatter(x=months_1, y=vami_1)
         
