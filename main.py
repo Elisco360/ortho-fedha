@@ -220,7 +220,7 @@ def analytics():
         left,mid,right = columns(3)
         price_avg = sum(all_prices_1)/len(all_prices_1)
         left.markdown("\n\n")
-        if one_month_return_1 != None: left.metric("1 month return",round(one_month_return_1,self.decimal_places)+"%", pf.change(one_month_return_1, price_avg)
+        if one_month_return_1 != None: left.metric("1 month return",round(one_month_return_1,self.decimal_places)+"%", pf.change(one_month_return_1, price_avg))
         #if two_month_return_1 != None: left.metric("2 month return: **{round(two_month_return_1,self.decimal_places)} %")
         #if three_month_return_1 != None: left.metric(f"** 3 month return: **{round(three_month_return_1,self.decimal_places)} %")
         #if six_month_return_1 != None: left.metric(f"** 6 month return: **{round(six_month_return_1,self.decimal_places)} %")
@@ -231,16 +231,16 @@ def analytics():
         #if average_gain_1 != None: right.metric(f"** Average gain: **{round(average_gain_1,self.decimal_places)} %")
         #if average_loss_1 != None: right.metric(f"** Average loss: **{round(average_loss_1,self.decimal_places)} %")
 
-        trace_1 = go.Scatter(x=months_1, y=vami_1)
+        p_trace_1 = go.Scatter(x=months_1, y=vami_1)
+        
+        p_fig = make_subplots()
+        p_fig.add_trace(p_trace_1)
 
-        fig = make_subplots()
-        fig.add_trace(trace_1)
-
-        fig.update_xaxes(title_text="Month")
-        fig.update_yaxes(title_text="Amount - ($)")
-        fig.update_layout(width=1300, height=500)
-        fig.update_layout(title={'text':'Value Added Monthly Index', 'x':0.5})
-        st.plotly_chart(fig, use_container_width=True)
+        p_fig.update_xaxes(title_text="Month")
+        p_fig.update_yaxes(title_text="Amount - ($)")
+        p_fig.update_layout(width=1300, height=500)
+        p_fig.update_layout(title={'text':'Value Added Monthly Index', 'x':0.5})
+        st.plotly_chart(p_fig, use_container_width=True)
 
         
     
