@@ -187,9 +187,7 @@ def analytics():
         trace_1 = go.Scatter(x=new_df_1['Months'], y=new_df_1['Returns'])
 
         fig = make_subplots()
-
-        fig.add_trace(list_of_traces[i])
-        list_of_plotted_files.append(list_of_files[i])
+        fig.add_trace(trace_1)
 
         fig.update_xaxes(title_text="Date")
         fig.update_yaxes(title_text="Return from Inception - (%)")
