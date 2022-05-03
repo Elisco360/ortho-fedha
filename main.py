@@ -173,26 +173,8 @@ def analytics():
         return 0
     
     end_index_1 = all_dates_1.index(end_date_string_1)
-    
-    with st.expander(f"Monthly Returns Chart"):
-        specific_returns_1 = pf.monthlyReturnsFromInception(prices = all_prices_1, dates=all_dates_1)
-        specific_months_1 = pf.monthsFromInception(prices=all_prices_1 ,dates=all_dates_1)
-        
-        file_info_1 = {'Returns':specific_returns_1, 'Months':specific_months_1}
-        new_df_1 = pd.DataFrame(file_info_1)
-
-        trace_1 = go.Scatter(x=new_df_1['Months'], y=new_df_1['Returns'])
-
-        fig = make_subplots()
-        fig.add_trace(trace_1)
-
-        fig.update_xaxes(title_text="Date")
-        fig.update_yaxes(title_text="Return from Inception - (%)")
-        fig.update_layout(width=1300, height=500)
-        fig.update_layout(title={'text':f"Monthly Returns from Inception", 'x':0.5})
-        st.plotly_chart(fig, use_container_width=True)
 	
-    with st.expander(f"Fund Performance"):
+    with st.expander(f"Performance Analytics"):
         st.header("Performance Indexes")
         st.markdown("<hr>", unsafe_allow_html=True)
         dates_1 = all_dates_1[start_index_1:end_index_1+1]
@@ -224,9 +206,11 @@ def analytics():
         if two_month_return_1 != None: left.metric("2 month return", str(round(two_month_return_1,3))+"%",round(two_month_return_1/100, 3))
         if three_month_return_1 != None: left.metric("3 month return", str(round(three_month_return_1,3))+"%",round(three_month_return_1/100, 3))
         if six_month_return_1 != None: left.metric("6 month return", str(round(six_month_return_1,3))+"%",round(six_month_return_1/100, 3))
+        mid.markdown("\n\n")
         if one_year_return_1 != None: mid.metric("One year return", str(round(one_year_return_1,3))+"%",round(one_year_return_1/100, 3))
         if compound_average_return_1 != None: mid.metric("Compound average return", str(round(compound_average_return_1,3))+"%",round(compound_average_return_1/100, 3))
         if year_to_date_1 != None: mid.metric("Year to date", str(round(year_to_date_1,3))+"%",round(year_to_date_1/100, 3))
+        right.markdown("\n\n")
         if average_return_1 != None: right.metric("Average return", str(round(average_return_1,3))+"%",round(average_return_1/100, 3))
         if average_gain_1 != None: right.metric("Average gain", str(round(average_gain_1,3))+"%",round(average_gain_1/100, 3))
         if average_loss_1 != None: right.metric("Average loss", str(round(average_loss_1,3))+"%",round(average_loss_1/100, 3))
@@ -244,7 +228,60 @@ def analytics():
         p_fig.update_layout(title={'text':'Value Added Monthly Index', 'x':0.5})
         st.plotly_chart(p_fig, use_container_width=True)
 
+    with st.expander(f"Risk Analytics"):
+        st.header("Risk Indexes")
+        st.markdown("<hr>", unsafe_allow_html=True)
         
+        myDay_1 = date_range_1[-1].day
+        myMonth_1 = date_range_1[-1].month
+        myYear_1 = date_range_1[-1].year
+
+        dates_1 = all_dates_1[start_index_1:end_index_1+1]
+        prices_1 = all_prices_1[start_index_1:end_index_1+1]
+
+        ll,lm,m,rm,rr = st.columns(5)
+        minimumAcceptableReturn = ll.number_input("Minimum Acceptable Return (%)",1.0)
+        riskFreeReturn = lm.number_input("Risk Free Return (%)",1.0)
+        left_risk,mid_risk,right_risk = st.columns(3)
+
+        # Risk analytics
+        standard_deviation_1 = rs.standardDeviation(prices=prices_1,dates=dates_1)
+        gain_standard_deviation_1 = rs.gainStandardDeviation(prices=prices_1,dates=dates_1)
+        loss_standard_deviation_1 = rs.lossStandardDeviation(prices=prices_1,dates=dates_1)
+        downside_deviation_1 = rs.downsideDeviation(prices=prices_1,dates=dates_1,minimumAcceptableReturn=minimumAcceptableReturn)
+        semi_deviation_1 = rs.semiDeviation(prices=prices_1,dates=dates_1)
+
+        sharpe_ratio_1 = rs.sharpeRatio(prices=prices_1,dates=dates_1,riskFreeReturn=riskFreeReturn)
+        sortino_ratio_1 = rs.sortinoRatio(prices=prices_1,dates=dates_1,minimumAcceptableReturn=minimumAcceptableReturn)
+        calmar_ratio_1 = rs.calmarRatio(prices=prices_1,dates=dates_1)
+        sterling_ratio_1 = rs.sterlingRatio(prices=prices_1,dates=dates_1,year=myYear_1)
+        gain_to_loss_ratio_1 = rs.gainToLossRatio(prices=prices_1,dates=dates_1)
+
+        losing_streak_1 = rs.losingStreak(prices=prices_1,dates=dates_1)
+        skewness_1 = rs.skewness(prices=prices_1,dates=dates_1)
+        kurtosis_1 = rs.kurtosis(prices=prices_1,dates=dates_1)
+        profit_to_loss_ratio_1 = rs.profitToLossRatio(prices=prices_1,dates=dates_1)
+        max_drawdown_1 = rs.maxDrawdown(prices=prices_1)
+        
+        left_risk.markdown("\n\n")
+        if standard_deviation_1 != None: left_risk.metric("Standard Deviation", str(round(standard_deviation_1,3)))
+        if gain_standard_deviation_1 != None: left_risk.metric("Gain Standard Deviation", str(round(gain_standard_deviation_1,3)), round(gain_standard_deviation_1,3))
+        if loss_standard_deviation_1 != None: left_risk.metric("Loss Standard Deviation", str(round(loss_standard_deviation_1,3)), -round(loss_standard_deviation_1,3))
+        if downside_deviation_1 != None: left_risk.metric("Downside Deviation", str(round(downside_deviation_1,3)))
+        if semi_deviation_1 != None: left_risk.metric("Semi Deviation", str(round(semi_deviatoin_1,3)))
+        
+        mid_risk.markdown("\n\n")
+        if sharpe_ratio_1 != None: mid_risk.metric("Sharpe Ratio", str(round(sharpe_ratio_1,3)))
+        if sortino_ratio_1 != None: mid_risk.metric("Sortino Ratio", str(round(sortino_ratio_1,3)))
+        if calmar_ratio_1 != None: mid_risk.metric("Calmer Ratio", str(round(calmar_ratio_1,3)))
+        if sterling_ratio_1 != None: mid_risk.metric("Sterling Ratio", str(round(sterling_ratio_1,3)))
+        if gain_to_loss_ratio_1 != None: mid_risk.metric("Gain to loss Ratio", str(round(gain_to_loss_ratio_1,3)))
+        
+        right_risk.markdown("\n\n")
+        if skewness_1 != None: right_risk.metric("Skewness", str(round(skewness_1,3)),round(skewness_1,3))
+        if kurtosis_1 != None: right_risk.metric("Kurtosis", str(round(kurtosis_1,3)),round(kurtosis_1,3))
+        if profit_to_loss_ratio_1 != None: right_risk.metric("Profit to loss Ratio", str(round(profit_to_loss_ratio_1,3)),round(profit_to_loss_ratio_1,3))
+        if max_drawdown_1 != None: right_risk.metric("Maximum Drawdown", str(round(max_drawdown_1,3)),round(max_drawdown_1,3))
     
 if options == "Home":
     home()
