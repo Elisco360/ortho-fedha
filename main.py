@@ -133,7 +133,6 @@ def analytics():
     lb.image("assets/analytics.png")
     st.title("Analytics")
     
-    st.info("Please make sure your file is in **CSV** format and has at least 2 columns.The first column should contain dates and the second should contain prices.")
     file = st.file_uploader("Choose your CSV file", accept_multiple_files=False, help="Please make sure your file is in csv format.")
 
     file_1 = file
@@ -143,7 +142,7 @@ def analytics():
         df_1 = pd.read_csv(file_1)
         df_1 = df_1.loc[:, ~df_1.columns.str.contains('^Unnamed')]
     except: 
-        st.error(f"Ensure that file is a csv file and has at least 2 columns. The first column should contain dates(dd-mm-yyyy) and the second should contain prices.")
+        st.info(f"Ensure that file is a csv file and has at least 2 columns. The first column should contain dates(dd-mm-yyyy) and the second should contain prices.")
         return 0
         
     columns_1 = list(df_1.columns)
@@ -155,7 +154,7 @@ def analytics():
     # Getting the first and last dates of the data in the list
     try: start_date_1 = pf.stringToDate(all_dates_1[0])
     except:
-        st.error(f"Ensure that file is a csv file and has at least 2 columns. The first column should contain dates and the second should contain prices.")
+        st.info(f"Ensure that file is a csv file and has at least 2 columns. The first column should contain dates and the second should contain prices.")
         return 0
 
     end_date_1 = pf.stringToDate(all_dates_1[-1])
@@ -174,10 +173,8 @@ def analytics():
         return 0
     
     end_index_1 = all_dates_1.index(end_date_string_1)
-
-    monthly_returns_chart = st.expander(f"Monthly Returns Chart")
-    with monthly_returns_chart:
-
+    
+    with st.expander(f"Monthly Returns Chart"):
         specific_returns_1 = pf.monthlyReturnsFromInception(prices = all_prices_1, dates=all_dates_1)
         specific_months_1 = pf.monthsFromInception(prices=all_prices_1 ,dates=all_dates_1)
         
@@ -193,6 +190,56 @@ def analytics():
         fig.update_yaxes(title_text="Return from Inception - (%)")
         fig.update_layout(width=1300, height=500)
         fig.update_layout(title={'text':f"Monthly Returns from Inception", 'x':0.5})
+        st.plotly_chart(fig, use_container_width=True)
+	
+    with st.expander(f"Fund Performance"):
+        st.header("Performance Indexes")
+        dates_1 = all_dates_1[start_index_1:end_index_1+1]
+        prices_1 = all_prices_1[start_index_1:end_index_1+1]
+
+        # Using the end date of the selected range to calculate the returns
+        myDay_1 = date_range_1[-1].day
+        myMonth_1 = date_range_1[-1].month
+        myYear_1 = date_range_1[-1].year
+
+        # FILE_1 = Performance analytics
+        year_to_date_1 = pf.YearToDate(prices_1,dates_1,myYear_1)[-1]
+        one_month_return_1 = pf.oneMonthReturn(prices_1, dates_1, myDay_1,myMonth_1,myYear_1)
+        two_month_return_1 = pf.twoMonthReturn(prices_1, dates_1, myDay_1,myMonth_1,myYear_1)
+        three_month_return_1 = pf.threeMonthReturn(prices_1, dates_1, myDay_1,myMonth_1,myYear_1)
+        six_month_return_1 = pf.sixMonthReturn(prices_1,dates_1,myDay_1,myMonth_1,myYear_1)
+        one_year_return_1 = pf.oneYearReturn(prices_1,dates_1,myDay_1,myMonth_1,myYear_1)
+        monthly_returns_1 = pf.monthlyReturns(prices_1,dates_1)
+        average_return_1 = pf.averageReturn(prices_1,dates_1)
+        average_gain_1 = pf.averageGain(prices_1,dates_1)
+        average_loss_1 = pf.averageLoss(prices_1,dates_1)
+        compound_average_return_1 = pf.compoundAverageReturn(prices_1,dates_1)
+        vami_1 = pf.VAMI(prices_1, dates_1)
+        months_1 = pf.monthsFromInception(prices_1, dates_1)
+
+        left,mid,right = columns(3)
+        price_avg = sum(all_prices_1)/len(all_prices_1)
+        left.markdown("\n\n")
+        if one_month_return_1 != None: left.metric("1 month return",round(one_month_return_1,self.decimal_places)+"%", pf.change(one_month_return_1, price_avg)
+        """if two_month_return_1 != None: left.metric("2 month return: **{round(two_month_return_1,self.decimal_places)} %")
+        if three_month_return_1 != None: left.metric(f"** 3 month return: **{round(three_month_return_1,self.decimal_places)} %")
+        if six_month_return_1 != None: left.metric(f"** 6 month return: **{round(six_month_return_1,self.decimal_places)} %")
+        if one_year_return_1 != None: mid.metric(f"** 1 year return: **{round(one_year_return_1,self.decimal_places)} %")
+        if compound_average_return_1 != None: mid.metric(f"** Compound average return: **{round(compound_average_return_1,self.decimal_places)} %")
+        if year_to_date_1 != None: mid.metric(f"** Year to date: **{round(year_to_date_1,self.decimal_places)} %")
+        if average_return_1 != None: right.metric(f"** Average return: **{round(average_return_1,self.decimal_places)} %")
+        if average_gain_1 != None: right.metric(f"** Average gain: **{round(average_gain_1,self.decimal_places)} %")
+        if average_loss_1 != None: right.metric(f"** Average loss: **{round(average_loss_1,self.decimal_places)} %")"""
+
+        trace_1 = go.Scatter(x=months_1, y=vami_1)
+
+        fig = make_subplots()
+        fig.add_trace(trace_1)
+
+        fig.update_xaxes(title_text="Month")
+        fig.update_yaxes(title_text="Amount - ($)")
+        fig.update_layout(width=1300, height=500)
+        fig.update_layout(title={'text':'Value Added Monthly Index', 'x':0.5})
         st.plotly_chart(fig, use_container_width=True)
 
         
