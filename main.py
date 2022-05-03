@@ -194,7 +194,7 @@ def analytics():
 	
     with st.expander(f"Fund Performance"):
         st.header("Performance Indexes")
-        st.markdown("<hr>")
+        st.markdown("<hr>", unsafe_allow_html=True)
         dates_1 = all_dates_1[start_index_1:end_index_1+1]
         prices_1 = all_prices_1[start_index_1:end_index_1+1]
 
@@ -231,6 +231,8 @@ def analytics():
         if average_gain_1 != None: right.metric("Average gain", str(round(average_gain_1,3))+"%",round(average_gain_1/100, 3))
         if average_loss_1 != None: right.metric("Average loss", str(round(average_loss_1,3))+"%",round(average_loss_1/100, 3))
 
+        st.markdown("<hr>", unsafe_allow_html=True)
+        
         p_trace_1 = go.Scatter(x=months_1, y=vami_1)
         
         p_fig = make_subplots()
