@@ -220,7 +220,7 @@ def analytics():
         left,mid,right = st.columns(3)
         price_avg = sum(all_prices_1)/len(all_prices_1)
         left.markdown("\n\n")
-        if one_month_return_1 != None: left.metric("1 month return", str(round(one_month_return_1,3))+"%",round(one_month_return/100, 3))
+        if one_month_return_1 != None: left.metric("1 month return", str(round(one_month_return_1,3))+"%",round(one_month_return_1/100, 3))
         #if two_month_return_1 != None: left.metric("2 month return: **{round(two_month_return_1,self.decimal_places)} %")
         #if three_month_return_1 != None: left.metric(f"** 3 month return: **{round(three_month_return_1,self.decimal_places)} %")
         #if six_month_return_1 != None: left.metric(f"** 6 month return: **{round(six_month_return_1,self.decimal_places)} %")
