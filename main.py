@@ -142,9 +142,9 @@ def analytics():
     try:
         df_1 = pd.read_csv(file_1)
         df_1 = df_1.loc[:, ~df_1.columns.str.contains('^Unnamed')]
-        except: 
-            st.error(f"Ensure that file is a csv file and has at least 2 columns. The first column should contain dates(dd-mm-yyyy) and the second should contain prices.")
-            return 0
+    except: 
+        st.error(f"Ensure that file is a csv file and has at least 2 columns. The first column should contain dates(dd-mm-yyyy) and the second should contain prices.")
+        return 0
         
     columns_1 = list(df_1.columns)
 
