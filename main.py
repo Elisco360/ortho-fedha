@@ -222,7 +222,7 @@ def analytics():
         left.markdown("\n\n")
         if one_month_return_1 != None: left.metric("1 month return", str(round(one_month_return_1,3))+"%",round(one_month_return_1/100, 3))
         if two_month_return_1 != None: left.metric("2 month return", str(round(two_month_return_1,3))+"%",round(two_month_return_1/100, 3))
-		if three_month_return_1 != None: left.metric("3 month return", str(round(three_month_return_1,3))+"%",round(three_month_return_1/100, 3))
+        if three_month_return_1 != None: left.metric("3 month return", str(round(three_month_return_1,3))+"%",round(three_month_return_1/100, 3))
         if six_month_return_1 != None: left.metric("6 month return", str(round(six_month_return_1,3))+"%",round(six_month_return_1/100, 3))
         if one_year_return_1 != None: mid.metric("One year return", str(round(one_year_return_1,3))+"%",round(one_year_return_1/100, 3))
         if compound_average_return_1 != None: mid.metric("Compound average return", str(round(compound_average_return_1,3))+"%",round(compound_average_return_1/100, 3))
