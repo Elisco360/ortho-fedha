@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 import webbrowser
 import requests
@@ -7,13 +8,17 @@ import plotly.express as px
 from annotated_text import annotated_text
 from streamlit_option_menu import option_menu
 import pandas as pd
-
+import re
 from economics import Economics as ec
 from forex import Forex as fx
 from bonds import Bonds as bnds
 from equity import Equity as qt
 import performance as pf
 import risk as rs
+
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 apiKEY = "ca5ccfad28074a4f92436e2e56afad2c"
 st.set_page_config(page_icon='assets/icon.png', page_title='Ortho Fedha', layout='wide')
@@ -51,13 +56,13 @@ def home():
             webbrowser.open('https://ortho.jetbrains.space/')
 
     with st.expander('Contact Us'):
-        with st.form("myform"):
-            st.markdown("Feedback Form")
-            m, n = st.columns(2)
+            form= st.form("myform", clear_on_submit=True)
+            form.markdown("Feedback Form")
+            m, n = form.columns(2)
             user_name = m.text_input('Name')
-            user_email = n.text_input('Email')
-            feedback = st.text_area("Feedback")
-            st.form_submit_button("Submit Feedback")
+            user_email = n.text_input('Email(Gmail)')
+            feedback = form.text_area("Feedback")
+            submit = form.form_submit_button("Submit Feedback")
 
     st.markdown("<hr>", unsafe_allow_html=True)
     lll, llw, lwl, wll, www = st.columns(5)
@@ -65,7 +70,84 @@ def home():
     lll.image('assets/twitter.png')
     lll.image('assets/facebook.png')
     lll.image('assets/instagram.png')
+    
+    def send_umail(receiver, name):
+        sender_email = "orthofedha@gmail.com"
+        receiver_email = receiver
+        password = "Thegodsare@1234"
 
+        message = MIMEMultipart("alternative")
+        message["Subject"] = "Feedback Appreciation"
+        message["From"] = sender_email
+        message["To"] = receiver_email
+
+        # Create the plain-text and HTML version of your message
+        text = f"""\
+Dear {name},
+        
+Thank you for your feedback on Ortho Fedha. Our software engineering and data analytics team highly
+appreciate your input and will keep you in touch with any updates with our software. 
+Thank you for being part of us.
+        
+Best,
+Team Ortho.
+    """
+
+        part1 = MIMEText(text, "plain")
+        message.attach(part1)
+
+        # Create secure connection with server and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(
+                sender_email, receiver_email, message.as_string()
+            )
+    
+    def send_omail(name, email, feedback):
+        sender_email = "orthofedha@gmail.com"
+        receiver_email = "orthofedha@gmail.com"
+        password = "Thegodsare@1234"
+
+        message = MIMEMultipart("alternative")
+        message["Subject"] = "User Feedback"
+        message["From"] = sender_email
+        message["To"] = receiver_email
+
+        # Create the plain-text and HTML version of your message
+        text = f"""\
+From {name},
+Email {email},
+    
+    {feedback}
+    """
+
+        part1 = MIMEText(text, "plain")
+        message.attach(part1)
+
+        # Create secure connection with server and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(
+                sender_email, receiver_email, message.as_string()
+            )
+            
+    def check_email(email):
+        regex = r'\b[A-Za-z0-9._%+-]+@gmail.com\b'
+        if re.fullmatch(regex, email):
+            return True
+        return False
+
+    if submit and check_email(user_email):
+        send_umail(user_email,user_name)
+        send_omail(user_name, user_email ,feedback)
+        form.success('Thank you for your feedback')
+        st.experimental_rerun()
+    elif submit and not check_email(user_email):
+        form.error("Kindly enter a valid email. Preferably gmail.")
+        time.sleep(2)
+        st.experimental_rerun()
 
 def markets():
     ll, lb, bb = st.columns(3)
