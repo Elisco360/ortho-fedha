@@ -80,7 +80,7 @@ class Equity:
 
         # Reading data from the csv file
         st.header('Equity')
-        st.success("Equity, typically referred to as shareholders' equity (or owners' equity for privately held companies),\
+        st.info("Equity, typically referred to as shareholders' equity (or owners' equity for privately held companies),\
                    represents the amount of money that would be returned to a company's shareholders if all of the assets were\
                        liquidated and all of the company's debt was paid off in the case of liquidation.\
                        Reference: https://www.investopedia.com/terms/e/equity.asp ")

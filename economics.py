@@ -409,7 +409,7 @@ class Economics:
                     for value in Values:
                         if value is not None: total_values.append(value)
                     if sum(total_values) == 0:
-                        st.success('No data available')
+                        st.info('No data available')
                     else:
                         fig = px.pie(result, values="Values", names='Names')
                         fig.update_traces(textposition='inside', textinfo='percent+label')
