@@ -182,8 +182,11 @@ def news():
     #             'Saudi Arabia 🇸🇦': 'SA', 'Singapore 🇸🇬': 'SG', 'Sweden 🇸🇪': 'SE', 'Thailand 🇹🇭': 'TH', 'Turkey 🇹🇷': 'TR', 'UAE 🇦🇪': 'AE', 
     #             'United States of America 🇺🇸': 'US', 'South Africa 🇿🇦': 'ZA'}
     #country = ll.selectbox("Select a country", countries.keys())
-    category = ll.selectbox("Select a news category", ["Business 🏛️", "Technology 💻", "Science 🔬", "Health 🧑🏾‍⚕️"])
-    category = category[:-2]
+    
+    categories = {"Business 🏛️": "Business", "Technology 💻": "Technology", "Science 🔬":"Science", "Health 🧑🏾‍⚕️":"Health"}
+    
+    category = ll.selectbox("Select a news category", categories.keys())
+    category = categories[category]
     print(category)
     query = True
 
