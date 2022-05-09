@@ -443,6 +443,9 @@ class Economics:
         def gdp():
             # Reading data from the csv file
             st.header('Gross Domestic Product')
+            st.info("Gross domestic product (GDP) is the standard measure of the value added\
+                created through the production of goods and services in a country during a certain period.\
+                        Reference: https://data.oecd.org/gdp/gross-domestic-product-gdp")
             file = 'Dataset/Economics/gdp.csv'
 
             df = pd.read_csv(file,
@@ -538,7 +541,7 @@ class Economics:
 
         def commodities():
             # Reading data from the csv file
-            st.header('Commodities')
+            st.header('Commodities')    
             file = "Dataset/Economics/comms.csv"
             df = pd.read_csv(file,
                              header=None,
