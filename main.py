@@ -23,6 +23,9 @@ from email.mime.multipart import MIMEMultipart
 apiKEY = "ca5ccfad28074a4f92436e2e56afad2c"
 st.set_page_config(page_icon='assets/icon.png', page_title='Ortho Fedha', layout='wide')
 
+#theming
+print(st.get_option("theme.primaryColor"))
+
 with st.sidebar:
     st.title("Menu")
     options = option_menu('',['Home', 'Markets', 'News', 'Analytics'],
@@ -187,7 +190,6 @@ def news():
     
     category = ll.selectbox("Select a news category", categories.keys())
     category = categories[category]
-    print(category)
     query = True
 
     if query:

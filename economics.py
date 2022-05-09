@@ -255,6 +255,9 @@ class Economics:
         def government_fiscal_operations():
             # Reading data from the csv file
             st.header('Government Fiscal Operations')
+            st.info("Fiscal operations are actions taken by the government to implement budgetary policies, such as revenue and expenditure measures,\
+                as well as issuance of public debt instruments and public debt management.\
+                        Reference: https://stats.oecd.org/glossary/detail.asp?ID=4470")
             file = "Dataset/Economics/gfo.csv"
 
             df = pd.read_csv(file,
@@ -329,6 +332,9 @@ class Economics:
         def interest_rates():
             # Reading data from the csv file
             st.header('Interest Rates')
+            st.info("Interest rate is the amount a lender charges a borrower and\
+                is a percentage of the principal—the amount loaned.\
+                        Reference: https://www.investopedia.com/terms/i/interestrate.asp")
             file = "Dataset/Economics/ir.csv"
 
             df = pd.read_csv(file,
@@ -610,6 +616,9 @@ class Economics:
         def merchandise_trade_flows():
             # Reading data from the csv file
             st.header('Merchandise Trade Flows')
+            st.info("Merchandise Trade Flows are goods which add or subtract from the stock of material resources of a country by entering\
+                (imports) or leaving (exports) its economic territory.\
+                        Reference: https://stats.oecd.org/glossary/detail.asp")
             file = "Dataset/Economics/mtf.csv"
             df = pd.read_csv(file,
                              header=None,
